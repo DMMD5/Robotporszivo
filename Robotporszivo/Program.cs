@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Robotporszivo
+namespace robotporszivo
 {
     internal class Program
     {
@@ -66,7 +66,7 @@ namespace Robotporszivo
                 robotOszlop = rnd.Next(oszlopok);
                 if (terkep[robotSor, robotOszlop] == '-')
                 {
-                    terkep[robotSor, robotOszlop] = 'R';
+                    terkep[robotSor, robotOszlop] = 'r';
                     megtalalt = true;
                 }
             }
@@ -103,37 +103,61 @@ namespace Robotporszivo
 
 
                 int valasztott = rnd.Next(szabadIranyokDb);
-                int Index = lepesekIndex[valasztott];
-                int ujS = robotSor + iranyok[Index, 0];
-                int ujO = robotOszlop + iranyok[Index, 1];
+                int iranyIndex = lepesekIndex[valasztott];
+
+                int ujS = robotSor + iranyok[iranyIndex, 0];
+                int ujO = robotOszlop + iranyok[iranyIndex, 1];
 
 
                 if (terkep[ujS, ujO] == 'k')
                 {
+                    kitakaritott++;
                 }
-                terkep[robotSor, robotOszlop] = '_';
+                terkep[robotSor, robotOszlop] = '-';
+                terkep[ujS, ujO] = 'r';
 
                 robotSor = ujS;
-                robotOszlop = ujO   ;
+                robotOszlop = ujO;
+                lepesek++;
 
-                maradokosz = SzamolKosz(terkep);
+                maradoKosz = SzamolKosz(terkep);
             }
 
+
+            Console.WriteLine();
+            Console.WriteLine("Lépések száma: " + lepesek);
+            Console.WriteLine("Kitakarított kosz: " + kitakaritott);
+            Console.WriteLine("Megmaradt kosz: " + SzamolKosz(terkep));
+            Console.WriteLine();
+
+            KiirTerkep(terkep);
+        }
+
+
+        static int SzamolKosz(char[,] terkep)
+        {
+            int db = 0;
+            foreach (char c in terkep)
+            {
+                if (c == 'k') db++;
+            }
+            return db;
         }
 
         static void KiirTerkep(char[,] terkep)
-            {
-                int sorok = terkep.GetLength(0);
-                int oszlopok = terkep.GetLength(1);
+        {
+            int sorok = terkep.GetLength(0);
+            int oszlopok = terkep.GetLength(1);
 
-                for (int i = 0; i < sorok; i++)
+            for (int i = 0; i < sorok; i++)
+            {
+                for (int j = 0; j < oszlopok; j++)
                 {
-                    for (int j = 0; j < oszlopok; j++)
-                    {
-                        Console.Write(terkep[i, j] + "   ");
-                    }
+                    Console.Write(terkep[i, j] + " ");
                 }
+                Console.WriteLine();
             }
+        }
 
         static bool VanSzabadSzomszed(char[,] terkep, int sor, int oszlop)
         {
@@ -155,16 +179,6 @@ namespace Robotporszivo
                 }
             }
             return false;
-        }
-
-        static int SzamolKosz(char[,] terkep)
-        {
-            int db = 0;
-            foreach (char c in terkep)
-            {
-                if (c == 'k') db++;
-            }
-            return db;
         }
     }
 }
