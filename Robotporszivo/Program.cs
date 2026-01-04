@@ -72,21 +72,67 @@ namespace Robotporszivo
             }
             KiirTerkep(terkep);
 
+            int lepesek = 0;
+            int kitakaritott = 0;
+
+            int maradoKosz = Szamolas(terkep);
+
+
+            while (maradoKosz > 0 && SzabadSzomszed(terkep, robotSor, robotOszlop))
+            {
+                int[,] iranyok = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, -1 } };
+                int[] lepesekIndex = new int[4];
+                for (int i = 0; i < 4; i++)
+                {
+                    int ujSor = robotSor + iranyok[i, 0];
+
+                    if (ujSor >= 0 && ujSor < sorok && uj >= 0 && ujOszlop < oszlopok)
+                    {
+                        if (terkep[ujSor, uj] != 'b')
+                        {
+                            lepesekIndex[szabadIranyokDb] = i;
+                        }
+                    }
+                }
 
 
 
+
+            }
         }
 
         static void KiirTerkep(char[,] terkep)
-        {
-            int sorok = terkep.GetLength(0);
-            int oszlopok = terkep.GetLength(1);
-
-            for (int i = 0; i < sorok; i++)
             {
-                for (int j = 0; j < oszlopok; j++)
+                int sorok = terkep.GetLength(0);
+                int oszlopok = terkep.GetLength(1);
+
+                for (int i = 0; i < sorok; i++)
                 {
-                    Console.Write(terkep[i, j] + "   ");
+                    for (int j = 0; j < oszlopok; j++)
+                    {
+                        Console.Write(terkep[i, j] + "   ");
+                    }
+                }
+            }
+
+        static bool SzabadSzomszed(char[,] terkep, int sor, int oszlop)
+            {
+                int sorok = terkep.GetLength(0);
+                int oszlopok = terkep.GetLength(1);
+                int[,] iranyok = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+
+                for (int i = 0; i < 4; i++)
+                {
+                    int ujSor = sor + iranyok[i, 0];
+                    int ujO = oszlop + iranyok[i, 1];
+
+                    if (ujSor >= 0 && ujO >= 0 && ujO < oszlopok)
+                    {
+                        if (terkep[ujSor, ujO] == 'b')
+                        {
+                            return false;
+                        }
+                    }
                 }
             }
         }
