@@ -26,6 +26,8 @@ namespace Robotporszivo
 
             char[,] terkep = new char[sorok, oszlopok];
 
+
+
             int szabadDb = 0, koszDb = 0;
             while (szabadDb == 0 || koszDb == 0)
             {
@@ -44,13 +46,48 @@ namespace Robotporszivo
                         }
                         else if (x < 70)
                         {
-                            terkep[i, j] = 'B';
+                            terkep[i, j] = 'b';
+                        }
+                        else
+                        {
+                            terkep[i, j] = 'k';
+                            koszDb++;
                         }
                     }
                 }
+            }
+
+
+            int robotSor = 0, robotOszlop = 0;
+            bool megtalalt = false;
+            while (!megtalalt)
+            {
+                robotSor = rnd.Next(sorok);
+                robotOszlop = rnd.Next(oszlopok);
+                if (terkep[robotSor, robotOszlop] == '-')
+                {
+                    terkep[robotSor, robotOszlop] = 'R';
+                    megtalalt = true;
+                }
+            }
+            KiirTerkep(terkep);
 
 
 
+
+        }
+
+        static void KiirTerkep(char[,] terkep)
+        {
+            int sorok = terkep.GetLength(0);
+            int oszlopok = terkep.GetLength(1);
+
+            for (int i = 0; i < sorok; i++)
+            {
+                for (int j = 0; j < oszlopok; j++)
+                {
+                    Console.Write(terkep[i, j] + "   ");
+                }
             }
         }
     }
