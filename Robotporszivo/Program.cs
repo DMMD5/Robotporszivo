@@ -100,7 +100,25 @@ namespace Robotporszivo
                         }
                     }
                 }
+
+
+                int valasztott = rnd.Next(szabadIranyokDb);
+                int Index = lepesekIndex[valasztott];
+                int ujS = robotSor + iranyok[Index, 0];
+                int ujO = robotOszlop + iranyok[Index, 1];
+
+
+                if (terkep[ujS, ujO] == 'k')
+                {
+                }
+                terkep[robotSor, robotOszlop] = '_';
+
+                robotSor = ujS;
+                robotOszlop = ujO   ;
+
+                maradokosz = SzamolKosz(terkep);
             }
+
         }
 
         static void KiirTerkep(char[,] terkep)
@@ -140,9 +158,13 @@ namespace Robotporszivo
         }
 
         static int SzamolKosz(char[,] terkep)
+        {
+            int db = 0;
+            foreach (char c in terkep)
             {
-
+                if (c == 'k') db++;
             }
+            return db;
         }
     }
 }
