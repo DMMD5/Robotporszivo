@@ -70,34 +70,36 @@ namespace Robotporszivo
                     megtalalt = true;
                 }
             }
+
+
             KiirTerkep(terkep);
 
             int lepesek = 0;
             int kitakaritott = 0;
 
-            int maradoKosz = Szamolas(terkep);
+            int maradoKosz = SzamolKosz(terkep);
 
 
-            while (maradoKosz > 0 && SzabadSzomszed(terkep, robotSor, robotOszlop))
+            while (maradoKosz > 0 && VanSzabadSzomszed(terkep, robotSor, robotOszlop))
             {
-                int[,] iranyok = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, -1 } };
+                int[,] iranyok = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+                int szabadIranyokDb = 0;
                 int[] lepesekIndex = new int[4];
+
                 for (int i = 0; i < 4; i++)
                 {
                     int ujSor = robotSor + iranyok[i, 0];
+                    int ujOszlop = robotOszlop + iranyok[i, 1];
 
-                    if (ujSor >= 0 && ujSor < sorok && uj >= 0 && ujOszlop < oszlopok)
+                    if (ujSor >= 0 && ujSor < sorok && ujOszlop >= 0 && ujOszlop < oszlopok)
                     {
-                        if (terkep[ujSor, uj] != 'b')
+                        if (terkep[ujSor, ujOszlop] != 'b')
                         {
                             lepesekIndex[szabadIranyokDb] = i;
+                            szabadIranyokDb++;
                         }
                     }
                 }
-
-
-
-
             }
         }
 
@@ -115,25 +117,31 @@ namespace Robotporszivo
                 }
             }
 
-        static bool SzabadSzomszed(char[,] terkep, int sor, int oszlop)
+        static bool VanSzabadSzomszed(char[,] terkep, int sor, int oszlop)
+        {
+            int sorok = terkep.GetLength(0);
+            int oszlopok = terkep.GetLength(1);
+            int[,] iranyok = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+
+            for (int i = 0; i < 4; i++)
             {
-                int sorok = terkep.GetLength(0);
-                int oszlopok = terkep.GetLength(1);
-                int[,] iranyok = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+                int ujSor = sor + iranyok[i, 0];
+                int ujO = oszlop + iranyok[i, 1];
 
-                for (int i = 0; i < 4; i++)
+                if (ujSor >= 0 && ujSor < sorok && ujO >= 0 && ujO < oszlopok)
                 {
-                    int ujSor = sor + iranyok[i, 0];
-                    int ujO = oszlop + iranyok[i, 1];
-
-                    if (ujSor >= 0 && ujO >= 0 && ujO < oszlopok)
+                    if (terkep[ujSor, ujO] != 'b')
                     {
-                        if (terkep[ujSor, ujO] == 'b')
-                        {
-                            return false;
-                        }
+                        return true;
                     }
                 }
+            }
+            return false;
+        }
+
+        static int SzamolKosz(char[,] terkep)
+            {
+
             }
         }
     }
